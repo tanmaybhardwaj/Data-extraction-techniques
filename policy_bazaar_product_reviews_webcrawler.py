@@ -95,8 +95,6 @@ def get_reviews(url):
         review_date_list.append(review_date)
         # Save Reviewer Location
         reviewer_location_list.append(reviewer_location)
-        print('url')
-        print(url)
             
     return(company_list,review_text_list,review_date_list,reviewer_location_list)
 
@@ -134,7 +132,6 @@ for url in insurance_sub_category_list:
 
 # Now we have URLs of each company, we need to get URL of their review page
 for company in company_url_list:
-    print(company)
     # For the company verify if reviews are written, if they exist then only save the URL of the review page
     company_page = requests.get(company, headers=headers)
     company_page_layout = BeautifulSoup(company_page.content, "html.parser")
@@ -149,7 +146,6 @@ for company in company_url_list:
 
 # Loop through all the Review URLs, get review details and save them in a csv file
 for url in (review_url_list):
-    print(url)
     company_list, review_text_list, review_date_list, reviewer_location_list = get_reviews(url)  
     reviews_df = pd.DataFrame(zip(company_list, review_date_list, reviewer_location_list, review_text_list),columns=['Company','Review Date','Reviewer Location','Review Text'])       
     df_company_product_reviews = df_company_product_reviews.append(reviews_df, ignore_index = True) 
