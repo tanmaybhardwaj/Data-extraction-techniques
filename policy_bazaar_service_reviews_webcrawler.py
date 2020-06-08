@@ -3,7 +3,7 @@
 # This webcrawler can scan different review pages on this site and save them as output in a csv file.
 #
 # Developer : Tanmay Bhardwaj
-# Dated : 4 June 2020
+# Dated : 8 June 2020
 
 # Import the packages and methods for webcrawler
 from bs4 import BeautifulSoup
@@ -20,7 +20,6 @@ import tweepy as tw
 # Arrays and Lists
 insurance_sub_category_list = list()
 reviewer_location_list = list()
-#company_url_list = list()
 review_text_list = list()
 review_date_list = list()
 review_url_list = list()
@@ -95,8 +94,6 @@ def get_reviews(url):
         review_date_list.append(review_date)
         # Save Reviewer Location
         reviewer_location_list.append(reviewer_location)
-        print('url')
-        print(url)
             
     return(product_list,review_text_list,review_date_list,reviewer_location_list)
 
@@ -135,30 +132,8 @@ for url in insurance_sub_category_list:
             review_url = (sub_category_url_layout.find('a', string="Read All Reviews"))
             review_url_list.append(review_url.get('href'))
 
-    #company_info = sub_category_url_layout.findAll('div', {"class": "card insurers"}) 
-    # Retrieve Company name and review page URL
-    #for li in company_info:
-        #for link in li.findAll('a'):        
-            #company_url_list.append(link.get('href'))    
-
-# Now we have URLs of each company, we need to get URL of their review page
-#for company in company_url_list:
-    #print(company)
-    # For the company verify if reviews are written, if they exist then only save the URL of the review page
-    #company_page = requests.get(company, headers=headers)
-    #company_page_layout = BeautifulSoup(company_page.content, "html.parser")
-    #rating_url = company_page_layout.find('div', {"class": "based_rating"})
-    # Check if any reviews are written for the company
-    #if rating_url is not None:
-        #review_exists =  (company_page_layout.find('div', {"class": "based_rating"})).text
-        # If reviews exist then save the URL 
-        #if (review_exists != no_reviews): 
-            #review_url = (company_page_layout.find('a', string="Read All Reviews"))
-            #review_url_list.append(review_url.get('href'))
-
 # Loop through all the Review URLs, get review details and save them in a csv file
 for url in (review_url_list):
-    print(url)
     product_list, review_text_list, review_date_list, reviewer_location_list = get_reviews(url)  
     reviews_df = pd.DataFrame(zip(product_list, review_date_list, reviewer_location_list, review_text_list),columns=['Company','Review Date','Reviewer Location','Review Text'])       
     df_insurance_category_reviews = df_insurance_category_reviews.append(reviews_df, ignore_index = True) 
